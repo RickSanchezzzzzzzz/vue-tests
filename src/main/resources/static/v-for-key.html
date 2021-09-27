@@ -6,5 +6,87 @@
 </head>
 <body>
 
+    <div class="app">
+
+    </div>
+
 </body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+
+    Vue.component("my-com",{
+        template:`
+            <li style="border: 1px solid red">
+                <div class="content">
+                    <div>{{ obj.name }}</div>
+                    <div>{{ obj.msg }}</div>
+                    <input type="text" v-model="obj.msg">
+                </div>
+            </li>
+        `,
+        props:{
+            obj : Object
+        }
+    })
+
+    let App = {
+        data(){
+            return {
+                datas:[
+                    {
+                        id:1,
+                        name:"张三",
+                        msg:"我是张三"
+                    },
+                    {
+                        id:2,
+                        name:"李四",
+                        msg:"我是李四"
+                    },
+                    {
+                        id:3,
+                        name:"王五",
+                        msg:"我是王五"
+                    }
+                ]
+            }
+        },
+        template: `
+            <div>
+                <button @click="changehandler">改变顺序</button>
+
+                <my-com v-for="(item,index) in datas" :obj="item" :key="item.id" ></my-com>
+            </div>
+        `,
+        methods:{
+            changehandler:function(){
+                var arr = this.datas;
+                console.log(arr);
+                for(var i=0;i<arr.length;i++){
+                    var newIndex = parseInt(Math.random()*arr.length);
+                    var initValue = arr[i];//arr[i]与arr[newIndex]的值进行交换
+                    arr[i]=arr[newIndex];
+                    arr[newIndex]=initValue;
+                }
+                this.datas= arr;
+                this.$forceUpdate();
+            }
+        }
+    }
+
+
+    new Vue({
+        el:".app",
+        template:`
+            <App></App>
+        `,
+        components:{
+            App
+        }
+    })
+
+</script>
+
 </html>
