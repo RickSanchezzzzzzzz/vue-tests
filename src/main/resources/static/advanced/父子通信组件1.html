@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    Vue.component("Child",{
+        data(){
+            return {
+                "text":this.givechilddata
+            }
+        },
+        template: `
+            <div>
+                <input v-model="text" @input="submits(text)"/>
+            </div>
+        `,
+        props:["givechilddata"],
+        methods:{
+            submits:function(value){
+                this.$emit("givefathersvalues",value);
+            }
+        }
+    });
+
+    Vue.component("Parent",{
+        data(){
+            return {
+                msg:"这是给孩子的数据",
+            }
+        },
+        template: `
+            <div>
+                <Child :givechilddata="msg" @givefathersvalues='givefathersvalue'/>
+            </div>
+        `,
+        methods:{
+            givefathersvalue:function(value){
+                console.log(value)
+            }
+        }
+    });
+
+    var vm = new Vue({
+        el:"#app",
+        data(){
+            return {
+
+            }
+        },
+        methods:{
+
+        },
+        components:{
+
+        },
+        template:`
+           <div>
+             <Parent/>
+           </div>
+
+        `,
+    });
+
+</script>
+
+</html>

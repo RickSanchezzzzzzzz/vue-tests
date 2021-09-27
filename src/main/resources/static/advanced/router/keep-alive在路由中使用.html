@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/vue-router.js"></script>
+<script>
+    var Pins = {
+        template: `
+            <div>我是沸点</div>
+        `,
+        created(){
+            console.log("沸点组件创建了")
+        },
+        mounted(){
+            console.log("沸点组件dom创建了")
+        },
+        destroyed(){
+            console.log("沸点组件销毁了")
+        }
+    }
+    var Timeline = {
+        template: `
+            <div id="timeline">
+                我是首页
+            </div>
+        `,
+        created(){
+            console.log("首页组件创建了")
+        },
+        mounted(){
+            console.log("首页组件dom创建了")
+        },
+        destroyed(){
+            console.log("首页组件销毁了")
+        }
+    }
+    var router = new VueRouter({
+        routes:[
+            {
+                path:"/timeline",
+                component:Timeline,
+            },
+            {
+                path:"/pins",
+                component:Pins
+            }
+        ]
+    });
+
+    var App = {
+        template : `
+        <div>
+           <router-link to="/timeline">首页</router-link>
+           <router-link to="/pins">沸点</router-link>
+           <keep-alive>
+             <router-view></router-view>
+           </keep-alive>
+        </div>
+        `
+    }
+
+    new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template:`
+            <App></App>
+        `,
+        router
+    })
+</script>
+</html>

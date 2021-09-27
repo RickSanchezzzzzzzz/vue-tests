@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div class="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/vue-router.js"></script>
+<script>
+    var Frontend={
+        data(){
+            return{
+                msg:"萨达"
+            }
+        },
+        template: `
+            <div>我是{{ msg }}</div>
+        `,
+        created(){
+
+        },
+        watch:{
+            "$route"(to,from){
+                console.log(to)
+                console.log(from)
+                this.msg = to.params.id == "frontend"? "前端" : "后端";
+            }
+        }
+    }
+    var Pins = {
+        template: `
+            <div>我是沸点</div>
+        `,
+    }
+    var Timeline = {
+        template: `
+            <div>
+                我是首页
+               <router-link :to="{ name:'comdesc',params:{id:'frontend'} }">前端</router-link>
+                <router-link :to="{ name:'comdesc',params:{id:'backend'} }">后端</router-link>
+                <router-view></router-view>
+            </div>
+        `,
+    }
+    var router = new VueRouter({
+        routes:[
+           {
+               path:"/timeline",
+               component:Timeline,
+               children:[
+                   {
+                       path:"/timeline/:id",
+                       name:"comdesc",
+                       component:Frontend
+                   }
+               ]
+           },
+           {
+               path:"/pins",
+               component:Pins
+           }
+       ]
+    });
+
+    var App = {
+        template : `
+        <div>
+           <router-link to="/timeline">首页</router-link>
+           <router-link to="/pins">沸点</router-link>
+           <router-view></router-view>
+        </div>
+        `
+    }
+
+    new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template:`
+            <App></App>
+        `,
+        router
+    })
+</script>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .blue{
+        background: #1eacda;
+    }
+    .green{
+        background: greenyellow;
+    }
+
+
+</style>
+<body>
+
+<div id="app">
+
+</div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+
+    var Vheader = {
+        template:`
+            <div>我是头部
+                <Vuebtn>按钮</Vuebtn>
+            </div>
+        `
+    }
+
+    var Vbody = {
+        template:`
+            <div>我是身子
+                <Vuebtn>按钮</Vuebtn>
+            </div>
+        `
+    }
+
+    var Vfoot = {
+        template:`
+            <div>我是脚不
+               <Vuebtn>按钮</Vuebtn>
+            </div>
+        `
+    }
+
+    var Vcontent= {
+        template:`
+            <div>
+                我是内容组件
+                <Vuebtn type="blue">登录</Vuebtn>
+                <Vuebtn type="green">注册</Vuebtn>
+            </div>
+        `
+    }
+
+    Vue.component("Vuebtn",{
+        data(){
+            return {
+
+            }
+        },
+        template: `
+          <button :class="type">
+            <slot>按钮</slot>
+          </button>
+        `,
+        props:["type"]
+    });
+
+    var vm = new Vue({
+        el:"#app",
+        data(){
+            return {
+                obj:{
+                    msg:"yyds"
+                }
+            }
+        },
+        methods:{
+            chagevalue:function(){
+                this.obj.msg="ddys";
+            }
+        },
+        components:{
+            Vheader,Vbody,Vcontent,Vfoot
+        },
+        template:`
+           <div>
+             <Vheader />
+             <Vbody/>
+             <Vcontent/>
+             <Vfoot/>
+             <input v-model="obj.msg">
+             <button @click="chagevalue">改值按钮</button>
+           </div>
+        `,
+    });
+
+</script>
+
+</html>

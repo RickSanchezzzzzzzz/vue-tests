@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    Vue.component("submit",{
+        template:`
+            <div class="submit"> </div>
+        `
+    });
+
+    var App = {
+        data(){
+            return {
+
+            }
+        },
+        template: `
+            <div>
+                <button ref="btn"></button>
+                <submit ref="submit"/>
+            </div>
+        `,
+        mounted(){
+            console.log(this.$refs.btn);
+            //如果给组件绑定ref属性，获取的是整个组件的对象
+            console.log(this.$refs.submit);
+        }
+    }
+
+    var vm = new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template:`
+            <App/>
+        `,
+    });
+</script>
+</html>

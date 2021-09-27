@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div class="app">
+
+    </div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    /* 通过provide和inject注入 */
+    Vue.component("Child",{
+        data(){
+            return{
+                msg: ""
+            }
+        },
+        inject:["for"],
+        created(){
+            this.msg = this.for;
+        },
+        template:`
+            <div>
+                <p>我是子组件{{ msg }}</p>
+            </div>
+        `
+    });
+
+    Vue.component("Parent",{
+        data(){
+            return{
+                msg:""
+            }
+        },
+        inject:["for"],
+        created(){
+            this.msg = this.for;
+        },
+        template:`
+            <div>
+                <p>我是父组件{{ msg }}</p>
+                <Child/>
+            </div>
+        `
+    });
+
+    var App = {
+        data(){
+            return {
+
+            }
+        },
+        provide:{
+            for:"他爹"
+        },
+        template: `
+            <div>
+                <h2>我是入口组件</h2>
+                <Parent/>
+            </div>
+        `
+    }
+
+    new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template:`
+            <App/>
+        `,
+    });
+</script>
+</html>

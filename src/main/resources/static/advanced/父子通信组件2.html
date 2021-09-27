@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div id="app">
+        <child1
+                :p-child1="child1"
+                :p-child2="child2"
+                :p-child-attrs="1231"
+                v-on:test1="onTest1"
+                v-on:test2="onTest2">
+        </child1>
+    </div>
+
+
+    <div class="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    /* $attr & $listener */
+
+    Vue.component("Child1", {
+        // inheritAttrs: true,
+        props: ["pChild1"],
+        template: `
+        <div class="child-1">
+         <p>in child1:</p>
+        <p>props: {{pChild1}}</p>
+        <p>$attrs: {{this.$attrs}}</p>
+        <hr>
+        <child2 v-bind="$attrs" v-on="$listeners"></child2></div>`,
+        mounted: function() {
+            this.$emit("test1");
+        }
+    });
+    Vue.component("Child2", {
+        // inheritAttrs: true,
+        props: ["pChild2"],
+        template: `
+        <div class="child-2">
+        <p>in child->child2:</p>
+        <p>props: {{pChild2}}</p>
+        <p>$attrs: {{this.$attrs}}</p>
+         <input v-bind="$attrs"/>
+          <button @click="$emit('test2','按钮点击')">触发事件</button>
+        <hr> </div>`,
+        mounted: function() {
+            this.$emit("test2");
+        }
+    });
+    const app = new Vue({
+        el: "#app",
+        data: {
+            child1: "pChild1的值",
+            child2: "pChild2的值"
+        },
+        methods: {
+            onTest1() {
+                console.log("test1 running...");
+            },
+            onTest2(value) {
+                console.log("test2 running..." + value);
+            }
+        }
+    });
+</script>
+
+<script>
+    //example 2
+    /* $attr & $listener */
+    Vue.component("C",{
+        data(){
+            return {}
+        },
+        template:`
+            <div>
+                <div @click="cClickhandler">{{ $attrs.message }}</div>
+            </div>
+
+        `,
+        methods:{
+            cClickhandler:function(){
+                console.log(this.$emit("getGrandchilddata","我是C的数据"))
+            }
+        }
+
+    })
+
+    Vue.component("Grandchild",{
+        template:`<div>
+                    <C v-bind ="$attrs" v-on="$listeners" @getGrandchilddata="getGrandchild"></C>
+                 </div>`,
+        methods:{
+            getGrandchild:function(val){
+                console.log(val)
+            }
+        }
+    });
+
+    Vue.component("Child",{
+        data(){
+            return{
+
+            }
+        },
+        template:`<div>
+                    <Grandchild v-bind="$attrs" v-on="$listeners"></Grandchild>
+                    <input type="text" v-model="$attrs.message">
+                 </div>`,
+    });
+
+    var App={
+        data(){
+            return {
+                msg:"我是父组件的内容",
+                messaagec:'Hello grandchild'
+            }
+        },
+        template:`
+            <div>
+                <p>这是一个父组件</p>
+                <Child :message = "messaagec" v-on:getGrandchilddata="getGrandchild"/>
+            </div>
+        `,
+        methods:{
+            getGrandchild:function(val){
+                console.log(val);
+            }
+        }
+    }
+    new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template: `<App/> `
+    })
+</script>
+</html>

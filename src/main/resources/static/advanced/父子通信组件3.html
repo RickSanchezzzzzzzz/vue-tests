@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app">
+    <brother1></brother1>
+</div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    //中央事件总线
+    var bus = new Vue();
+    Vue.component("brother3",{
+        data(){
+            return {
+                msg:""
+            }
+        },
+        template:`
+            <div>
+                <p>我是老三</p>
+                <div>老二传递的数据：{{ msg }}</div>
+                <input type="text" v-model="msg" @input="passData(msg)">
+            </div>
+        `,
+        mounted() {
+            //绑定全局事件globalEvent事件
+            bus.$on("brother3Data",(val)=>{
+                this.msg = val;
+            });
+        },
+        methods: {
+            passData(val){
+                bus.$emit('globalEvent',val)
+            }
+        }
+    })
+
+    Vue.component("brother2",{
+        data(){
+            return{
+                msg:"hello brother2",
+                brother1Msg:""
+            }
+        },
+        template: `
+            <div>
+                <p>我是老二</p>
+                <input type="text" v-model="msg" @input="changedata(msg)">
+                <p>老三传递过来的数据：{{ brother1Msg }}</p>
+            </div>
+        `,
+        mounted(){
+            //绑定全局事件globalEvent事件
+            bus.$on("globalEvent",(val)=>{
+                this.brother1Msg = val;
+            });
+        },
+        methods: {
+            changedata(val){
+                bus.$emit('brother3Data',val)
+            }
+        }
+    });
+
+    var brother1 = {
+        data(){
+            return {
+                msg:"我是父组件中的内容",
+                messagec:"hello c"
+            }
+        },
+        template:`
+            <div>
+                <brother2></brother2>
+                <brother3></brother3>
+            </div>
+        `,
+        methods:{
+            getCData(val){
+                console.log(val);
+            }
+        }
+    }
+
+    new Vue({
+       el:".app",
+       components:{
+           brother1
+        }
+    });
+</script>
+</html>

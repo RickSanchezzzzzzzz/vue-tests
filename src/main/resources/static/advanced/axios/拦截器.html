@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app">
+    <button @click="handler">發請求</button>
+</div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/vue-router.js"></script>
+<script>
+    /**
+     * 可以用自定义配置新建一个axios实例
+     * var instance = axios.create({
+     *     baseURL:"xxxxx",
+     *     timout:1000,
+     *     headers:{'X-Custom-Header' : 'foobar'}
+     * })
+     */
+
+    Vue.prototype.$axios = axios;
+
+    Vue.use(axios);
+    new Vue({
+        el:".app",
+        methods:{
+            handler:function(){
+                // 添加请求拦截器
+                this.$axios.interceptors.request.use(function (config) {
+                    // 在发送请求之前做些什么
+                    return config;
+                }, function (error) {
+                    // 对请求错误做些什么
+                    return Promise.reject(error);
+                });
+
+                // 添加响应拦截器
+                this.$axios.interceptors.response.use(function (response) {
+                    // 对响应数据做点什么
+                    return response;
+                }, function (error) {
+                    // 对响应错误做点什么
+                    return Promise.reject(error);
+                });
+
+                this.$axios.defaults.baseURL="xxxxxx";
+                this.$axios.get("");
+
+            }
+        }
+    })
+
+</script>
+</html>

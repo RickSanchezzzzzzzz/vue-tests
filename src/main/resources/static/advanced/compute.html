@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul{
+            margin: 0;
+            padding:0;
+        }
+        ul li{
+            padding:20px 0;
+        }
+        ul li.active{
+            background: #66ffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app">
+        <audio
+                :src="musiclist[currentindex].src"
+                controls autoplay
+                style="width: 600px"
+                ref="audios"
+                @end = "end"
+        ></audio>
+        <ul>
+            <li v-for="(item,index) in musiclist" @click="clickhandler(item)"
+            :class="{active:currentindex == index} "
+            >
+                歌名{{ item.name }} - 作者 {{ item.author }}
+            </li>
+        </ul>
+    </div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    var musiclist = [
+        {
+          id:0,
+          name:"米津玄師 - 打上花火",
+          author:"米津玄師",
+          src:"../songs/DAOKO,米津玄師 - 打上花火.mp3"
+        },
+        {
+            id:1,
+            name:"米津玄師 - Lemon",
+            author:"米津玄師",
+            src:"../songs/米津玄師 - Lemon.mp3"
+        },
+        {
+            id:2,
+            name:"米津玄師 - LOSER.mp3",
+            author:"米津玄師",
+            src:"../songs/米津玄師 - LOSER.mp3"
+        }
+    ] ;
+
+    new Vue ({
+        el:".app",
+        data:{
+            musiclist:musiclist,
+            currentindex:0
+        },
+        computed:{
+            getcurrentsrc :function(){
+                return this.musiclist[this.currentindex].src;
+            }
+        },
+        methods:{
+            clickhandler:function(item){
+                if(item.id == this.currentindex){
+                    console.log(this.$refs.audios);
+                    this.$refs.audios.src= this.musiclist[this.currentindex].src;
+                    return;
+                }
+                this.currentindex = item.id;
+
+            },
+            end:function(){
+                this.currentindex =  this.currentindex+1;
+                if(this.currentindex>2){
+                    this.currentindex = 0;
+                }
+                this.$refs.audios.currentTime = 0;
+                this.$refs.audios.src= this.musiclist[this.currentindex].src;
+
+
+                this.$refs.audios.forEach(item=>{
+                    item.isStart = true;
+                })
+                return;
+            }
+        }
+    })
+
+</script>
+</html>

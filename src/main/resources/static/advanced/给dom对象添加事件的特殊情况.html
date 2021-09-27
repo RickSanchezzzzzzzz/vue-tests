@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var App = {
+        data(){
+            return {
+                isshow:false
+            }
+        },
+        template: `
+            <div class="app">
+               <input type="text" v-show="isshow" ref="input">
+            </div>
+        `,
+        mounted(){
+            this.isshow=true;
+
+            //$nextTick()
+            //是在DOM更新循环结束之后执行的回调函数，
+            //在修改数据之后使用此方法在回调中获取到更新之后的Dom
+            this.$nextTick(()=>{
+                this.$refs.input.focus();
+            })
+
+        }
+    }
+
+    var vm = new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template:`
+            <App/>
+        `,
+    });
+</script>
+</html>

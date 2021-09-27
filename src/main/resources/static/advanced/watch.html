@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app">
+    <input type="text" v-model="msg">
+    <h3>{{ msg }}</h3>
+    <button @click="stus[0].name = 'rose'">改值</button>
+    <h4>{{ stus[0].name }}</h4>
+</div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+
+    new Vue({
+        el:".app",
+        data(){
+            return {
+                msg:"這是一個輸入框",
+                stus:[{"name":"jack"}]
+            }
+        },
+        watch:{
+            msg:function(oldV,newV){
+                console.log(oldV,newV)
+            },
+            stus:{
+                deep:true,
+                handler:function(newV,oidV){
+                    console.log(oidV[0],newV[0])
+                }
+            }
+        }
+    })
+
+</script>
+</html>

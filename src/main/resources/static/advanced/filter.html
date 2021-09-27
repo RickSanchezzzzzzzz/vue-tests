@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app"></div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+
+
+    Vue.filter("myReverse",function (value,arg){
+        return arg+","value.split("").reverse().join("");
+    })
+    var App={
+        data(){
+            return {
+                price:0,
+                message:"hello world"
+            }
+        },
+        template: `
+               <div>
+                    <input type="number" v-model="price">
+                    <h3>{{ price | myFilter }}</h3>
+                    <h4>{{ message | myReverse(price) }}</h4>
+                </div>
+            `,
+        filters:{
+            myFilter:function(value){
+                return "￥"+value;
+            }
+        }
+
+    }
+    new Vue({
+        el:".app",
+        components:{
+            App
+        },
+        template:`
+            <App></App>
+         `
+    })
+
+</script>
+</html>

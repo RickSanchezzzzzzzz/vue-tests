@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="app">
+    <App></App>
+</div>
+
+</body>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    Vue.component("Test",{
+        data(){
+            return {
+                msg:"hello world",
+
+            }
+        },
+        template:`
+            <div>
+               <div class="msg">{{ msg }}</div>
+               <button @click="changeHandler">更新</button>
+
+            </div>
+        `,
+        methods:{
+            changeHandler:function(){
+                this.msg = this.msg+"666";
+            },
+            destoryHandler:function(){
+
+            }
+        },
+        //组件创建之前
+        beforeCreate:function(){
+            console.log(this.msg)
+        },
+        //组件创建之后
+        created:function(){
+            console.log(this.msg)
+        },
+        //dom对象初始化之前
+        beforeMount:function(){
+            console.log(document.getElementsByClassName("app")[0])
+        },
+        //dom对象初始化之后
+        mounted:function(){
+            console.log(document.getElementsByClassName("app")[0])
+        },
+        //数据被更新之前
+        beforeUpdate:function(){
+            console.log(this.msg)
+        },
+        //数据被更新之后
+        updated:function(){
+            console.log(this.msg)
+        },
+        //组件销毁之前
+        beforeDestory:function(){
+            console.log(this.msg)
+        },
+        //组件销毁之后
+        destoryed:function(){
+            console.log(this.msg)
+        },
+        //组件被激活时候
+        activated:function(){
+            console.log("数据被显示了")
+        },
+        //组件被停用时候
+        deactivated:function(){
+            console.log("数据被隐藏了")
+        }
+    });
+
+    var App = {
+        data(){
+            return {
+                isShow:true
+            }
+        },
+        template:`
+           <div class="app">
+                <keep-alive>
+                  <Test v-if="isShow"/>
+                </keep-alive>
+                <button @click="isShow = !isShow">销毁</button>
+           </div>
+        `
+    }
+
+    new Vue({
+        el:".app",
+        data(){
+            return {
+
+            }
+        },
+        components:{
+            App
+        },
+    });
+</script>
+</html>

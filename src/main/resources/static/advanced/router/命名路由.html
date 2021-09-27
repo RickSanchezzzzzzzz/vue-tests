@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app"></div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 官网提供的 axios 在线地址 -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/vue-router.js"></script>
+<script>
+    //1.引入vue模块
+    //2.引入router模块
+    //3、让vue使用vuerouter创建
+    //4.创建一个vuerouter对象
+    //5.配置路由对象
+    //6.交给实例化Vue对象管理
+    //Vue.use(VueRouter);
+    var Login = {
+        template:`
+            <div>
+                我是登录
+            </div>
+        `
+    }
+    var Register = {
+        template:`
+            <div>
+               我是注册
+            </div>
+        `
+    }
+
+    var router= new VueRouter({
+        routes:[
+            {
+                path:"/login",
+                name:"log",
+                component:Login
+            },
+            {
+                path:"/register",
+                name:"resg",
+                component:Register
+            }
+        ]
+    })
+    //引入vue-router模块 给咱们抛出来两个全局组件
+    //router-link ===> a标签dom  to===>href
+    //router-view ===> 路由匹配组件的出口
+    var App= {
+        template: `
+        <div>
+            <router-link :to="{ name:'log' }">登录页面</router-link>
+            <router-link :to="{ name:'resg' }">注册页面</router-link>
+            <router-view></router-view>
+
+        </div>
+`
+    }
+
+    new Vue({
+        el:"#app",
+        data(){
+            return{
+
+            }
+        },
+        template:`
+        <App/>
+       ` ,
+        components:{
+            App
+        },
+        router
+    });
+
+</script>
+</body>
+</html>
